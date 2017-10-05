@@ -1,0 +1,157 @@
+machine machine0 sees ctx0
+
+variables user content chat active muted chatcontent owner
+
+invariants
+  @inv1 user ⊆ USER
+  @inv2 content ⊆ CONTENT
+  @inv3 chat ∈ user ↔ user // chat sessions
+  @inv4 active ∈ user ⇸ user // active chat session
+  @inv5 muted ∈ user ↔ user // muted sessions
+  @inv6 active ⊆ chat // active chat sessions
+  @inv7 muted ⊆ chat // muted chat sessions
+  @inv8 chatcontent ∈ content ↔ chat                  // chat contents
+  @inv9 owner ∈ content → user
+  /* chat sessions
+     inv10 chatcontent ∈ // users' chat content */
+
+events
+  event INITIALISATION
+    then
+      @init1 user ≔  ∅
+      @init2 content ≔ ∅
+      @init3 chat ≔ ∅
+      @init4 active ≔ ∅ // init7 chatcontent ≔ ∅
+      @init5 muted ≔ ∅
+      @init6 chatcontent ≔ ∅
+      @init7 owner ≔ ∅
+  end
+
+  event creat_chat_session // US-01
+    any u1 u2
+    where
+      @grd1 u1 ∈ user ∧ u2 ∈ user
+      @grd2 u1 ↦ u2 ∉ chat
+    then
+      @act1 chat ≔ chat ∪ {u1 ↦ u2}
+  end
+
+  event select_chat // US-02
+    any u1 u2
+    where
+      @grd1 u1 ∈ user ∧ u2 ∈ user
+      @grd2 u1 ↦ u2 ∈ chat
+    then
+      @act1 active ≔ active  {u1 ↦ u2}
+  end
+
+  event chatting // US-03
+    any u1 u2 c
+    where
+      @grd1 u1 ∈ user ∧ u2 ∈ user
+      @grd2 u1 ↦ u2 ∈ chat
+      @grd3 u1 ↦ u2 ∉ muted
+      @grd4 u2 ↦ u1 ∉ muted
+      @grd5 u1 ↦ u2 ∈ active
+      @grd6 c ∈ CONTENT ∖ content
+    then
+      @act1 content ≔ content ∪ {c}
+      @act2 chat ≔ chat ∪ {u2 ↦ u1}
+      @act3 chatcontent ≔ chatcontent ∪ {c ↦ (u1 ↦ u2)} ∪ {c ↦ (u2 ↦ u1)}
+      @act4 owner ≔ owner ∪ {c ↦ u1}
+  end
+
+  event delete_content // US-04
+    any u1 u2 c
+    where
+      @grd1 u1 ∈ user ∧ u2 ∈ user // @grd2 u1 ↦ u2 ∈ chat // useless due to the next guard
+      @grd3 u1 ↦ u2 ∈ active
+      @grd4 c ∈ content
+      @grd5 (c ↦ (u1 ↦ u2)) ∈ chatcontent
+    then
+      @act1 chatcontent ≔ chatcontent ∖ {c ↦ (u1 ↦ u2)}
+  end
+
+  event clear_content // US-04
+    any u c
+    where
+      @grd1 u ∈ user
+      @grd2 c ∈ content
+      @grd3 c ↦ u ∈ owner
+    then
+      @act1 chatcontent ≔ {c} ⩤ chatcontent
+      @act2 owner ≔ owner ∖ {c ↦ u}
+      @act3 content ≔ content ∖ {c}
+  end
+
+  event delete_chat_session
+  // US-05
+	any u1 u2
+	where
+		@grd1 u1 ∈ user ∧ u2 ∈ user
+		@grd2 u1 ↦ u2 ∈ chat
+		@grd3 u1 ↦ u2 ∈ active
+	then
+		@act1 chatcontent ≔ chatcontent ⩥ {u1 ↦ u2}
+		@act2 active ≔ active ∖ {u1 ↦ u2}
+		@act3 muted ≔ muted ∖ {u1 ↦ u2}
+		@act4 chat ≔ chat ∖ {u1 ↦ u2}
+  end
+
+  event mute_chat
+  // US-06
+  	any u1 u2
+  	where
+  		@grd1 u1 ∈ user ∧ u2 ∈ user
+  		@grd2 u1 ↦ u2 ∈ chat
+  		@grd3 u1 ↦ u2 ∉ muted
+  	then
+  		@act1 muted ≔ muted ∪ {u1 ↦ u2}
+  end
+
+  event unmute_chat
+  // US-07
+  	any u1 u2
+  	where
+  		@grd1 u1 ∈ user ∧ u2 ∈ user
+  		@grd2 u1 ↦ u2 ∈ chat
+		@grd3 u1 ↦ u2 ∈ muted
+  	then
+  		@act1 muted ≔ muted ∖ {u1 ↦ u2}
+  end
+
+  event broadcast
+  // US-08
+    any u ul c
+    where
+    	@grd1 u ∈ user ∧ ul ∈ user ∧ c ∈ CONTENT ∖ content
+    	@grd2 u ↦ ul ∈ chat
+    then
+    	@act1 content ≔  content ∪ {c}
+    	@act3 owner ≔ owner  ∪ {c ↦ u}
+    	@act2 chatcontent ≔ chatcontent ∪ {c ↦ (u ↦ ul)}
+  end
+
+  event forward
+  // US-09
+	any u ul c
+    where
+    	@grd1 u ∈ user ∧ ul ∈ user ∧ c ∈ content
+    	@grd2 u ↦ ul ∈ chat
+    then
+    	@act1 chatcontent ≔ chatcontent ∪ {c ↦ (u ↦ ul)}
+  end
+
+  event unselect_chat
+  // US-10
+    any u1 u2
+	where
+	  @grd1 u1 ∈ user ∧ u2 ∈ user
+	  @grd3 u1 ↦ u2 ∈ active
+	then
+	  @act1 active ≔ {u1} ⩤ active
+  end
+end
+
+
+

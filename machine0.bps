@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<org.eventb.core.psFile>
+<org.eventb.core.psStatus name="INITIALISATION/inv3/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="21" org.eventb.core.psManual="false"/>
+<org.eventb.core.psStatus name="INITIALISATION/inv4/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="21" org.eventb.core.psManual="false"/>
+<org.eventb.core.psStatus name="INITIALISATION/inv5/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="21" org.eventb.core.psManual="false"/>
+<org.eventb.core.psStatus name="INITIALISATION/inv6/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="21" org.eventb.core.psManual="false"/>
+<org.eventb.core.psStatus name="INITIALISATION/inv7/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="21" org.eventb.core.psManual="false"/>
+<org.eventb.core.psStatus name="INITIALISATION/inv8/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="21" org.eventb.core.psManual="false"/>
+<org.eventb.core.psStatus name="INITIALISATION/inv9/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="21" org.eventb.core.psManual="false"/>
+<org.eventb.core.psStatus name="creat_chat_session/inv3/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="creat_chat_session/inv6/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="creat_chat_session/inv7/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="creat_chat_session/inv8/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="select_chat/inv4/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="select_chat/inv6/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="chatting/inv3/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="chatting/inv6/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="chatting/inv7/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="chatting/inv8/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="chatting/inv9/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="delete_content/inv8/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="19" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="clear_content/inv8/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="28" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="clear_content/inv9/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="26" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="delete_chat_session/inv3/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="delete_chat_session/inv4/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="delete_chat_session/inv5/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="delete_chat_session/inv6/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="delete_chat_session/inv7/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="delete_chat_session/inv8/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="mute_chat/inv5/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="mute_chat/inv7/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="false"/>
+<org.eventb.core.psStatus name="unmute_chat/inv5/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="unmute_chat/inv7/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="broadcast/inv8/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="broadcast/inv9/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="forward/inv8/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="52" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="unselect_chat/inv4/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="53" org.eventb.core.psManual="true"/>
+<org.eventb.core.psStatus name="unselect_chat/inv6/INV" org.eventb.core.confidence="1000" org.eventb.core.poStamp="53" org.eventb.core.psManual="true"/>
+</org.eventb.core.psFile>

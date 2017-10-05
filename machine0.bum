@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<org.eventb.core.machineFile org.eventb.core.configuration="org.eventb.core.fwd;de.prob.units.mchBase" org.eventb.texttools.text_lastmodified="1507225644300" org.eventb.texttools.text_representation="machine machine0 sees ctx0&#10;&#10;variables user content chat active muted chatcontent owner&#10;&#10;invariants&#10;  @inv1 user ⊆ USER&#10;  @inv2 content ⊆ CONTENT&#10;  @inv3 chat ∈ user ↔ user // chat sessions&#10;  @inv4 active ∈ user ⇸ user // active chat session&#10;  @inv5 muted ∈ user ↔ user // muted sessions&#10;  @inv6 active ⊆ chat // active chat sessions&#10;  @inv7 muted ⊆ chat // muted chat sessions&#10;  @inv8 chatcontent ∈ content ↔ chat // chat contents&#10;  @inv9 owner ∈ content → user&#10;  /* chat sessions&#10;     inv10 chatcontent ∈ // users' chat content */&#10;&#10;events&#10;  event INITIALISATION&#10;    then&#10;      @init1 user ≔  ∅&#10;      @init2 content ≔ ∅&#10;      @init3 chat ≔ ∅&#10;      @init4 active ≔ ∅ // init7 chatcontent ≔ ∅&#10;      @init5 muted ≔ ∅&#10;      @init6 chatcontent ≔ ∅&#10;      @init7 owner ≔ ∅&#10;  end&#10;&#10;  event creat_chat_session // US-01&#10;    any u1 u2&#10;    where&#10;      @grd1 u1 ∈ user ∧ u2 ∈ user&#10;      @grd2 u1 ↦ u2 ∉ chat&#10;    then&#10;      @act1 chat ≔ chat ∪ {u1 ↦ u2}&#10;  end&#10;&#10;  event select_chat // US-02&#10;    any u1 u2&#10;    where&#10;      @grd1 u1 ∈ user ∧ u2 ∈ user&#10;      @grd2 u1 ↦ u2 ∈ chat&#10;    then&#10;      @act1 active ≔ active  {u1 ↦ u2}&#10;  end&#10;&#10;  event chatting // US-03&#10;    any u1 u2 c&#10;    where&#10;      @grd1 u1 ∈ user ∧ u2 ∈ user&#10;      @grd2 u1 ↦ u2 ∈ chat&#10;      @grd3 u1 ↦ u2 ∉ muted&#10;      @grd4 u2 ↦ u1 ∉ muted&#10;      @grd5 u1 ↦ u2 ∈ active&#10;      @grd6 c ∈ CONTENT ∖ content&#10;    then&#10;      @act1 content ≔ content ∪ {c}&#10;      @act2 chat ≔ chat ∪ {u2 ↦ u1}&#10;      @act3 chatcontent ≔ chatcontent ∪ {c ↦ (u1 ↦ u2)} ∪ {c ↦ (u2 ↦ u1)}&#10;      @act4 owner ≔ owner ∪ {c ↦ u1}&#10;  end&#10;&#10;  event delete_content // US-04&#10;    any u1 u2 c&#10;    where&#10;      @grd1 u1 ∈ user ∧ u2 ∈ user // @grd2 u1 ↦ u2 ∈ chat // useless due to the next guard&#10;      @grd3 u1 ↦ u2 ∈ active&#10;      @grd4 c ∈ content&#10;      @grd5 (c ↦ (u1 ↦ u2)) ∈ chatcontent&#10;    then&#10;      @act1 chatcontent ≔ chatcontent ∖ {c ↦ (u1 ↦ u2)}&#10;  end&#10;&#10;  event clear_content // US-04&#10;    any u c&#10;    where&#10;      @grd1 u ∈ user&#10;      @grd2 c ∈ content&#10;      @grd3 c ↦ u ∈ owner&#10;    then&#10;      @act1 chatcontent ≔ {c} ⩤ chatcontent&#10;      @act2 owner ≔ owner ∖ {c ↦ u}&#10;      @act3 content ≔ content ∖ {c}&#10;  end&#10;&#10;  event delete_chat_session&#10;  // US-05&#10;&#9;any u1 u2&#10;&#9;where&#10;&#9;&#9;@grd1 u1 ∈ user ∧ u2 ∈ user&#10;&#9;&#9;@grd2 u1 ↦ u2 ∈ chat&#10;&#9;&#9;@grd3 u1 ↦ u2 ∈ active&#10;&#9;then&#10;&#9;&#9;@act1 chatcontent ≔ chatcontent ⩥ {u1 ↦ u2}&#10;&#9;&#9;@act2 active ≔ active ∖ {u1 ↦ u2}&#10;&#9;&#9;@act3 muted ≔ muted ∖ {u1 ↦ u2}&#10;&#9;&#9;@act4 chat ≔ chat ∖ {u1 ↦ u2}&#10;  end&#10;&#10;  event mute_chat&#10;  // US-06&#10;  &#9;any u1 u2&#10;  &#9;where&#10;  &#9;&#9;@grd1 u1 ∈ user ∧ u2 ∈ user&#10;  &#9;&#9;@grd2 u1 ↦ u2 ∈ chat&#10;  &#9;&#9;@grd3 u1 ↦ u2 ∉ muted&#10;  &#9;then&#10;  &#9;&#9;@act1 muted ≔ muted ∪ {u1 ↦ u2}&#10;  end&#10;&#10;  event unmute_chat&#10;  // US-07&#10;  &#9;any u1 u2&#10;  &#9;where&#10;  &#9;&#9;@grd1 u1 ∈ user ∧ u2 ∈ user&#10;  &#9;&#9;@grd2 u1 ↦ u2 ∈ chat&#10;&#9;&#9;@grd3 u1 ↦ u2 ∈ muted&#10;  &#9;then&#10;  &#9;&#9;@act1 muted ≔ muted ∖ {u1 ↦ u2}&#10;  end&#10;&#10;  event broadcast&#10;  // US-08&#10;    any u ul c&#10;    where&#10;    &#9;@grd1 u ∈ user ∧ ul ∈ user ∧ c ∈ CONTENT ∖ content&#10;    &#9;@grd2 u ↦ ul ∈ chat&#10;    then&#10;    &#9;@act1 content ≔  content ∪ {c}&#10;    &#9;@act3 owner ≔ owner  ∪ {c ↦ u}&#10;    &#9;@act2 chatcontent ≔ chatcontent ∪ {c ↦ (u ↦ ul)}&#10;  end&#10;&#10;  event forward&#10;  // US-09&#10;&#9;any u ul c&#10;    where&#10;    &#9;@grd1 u ∈ user ∧ ul ∈ user ∧ c ∈ content&#10;    &#9;@grd2 u ↦ ul ∈ chat&#10;    then&#10;    &#9;@act1 chatcontent ≔ chatcontent ∪ {c ↦ (u ↦ ul)}&#10;  end&#10;&#10;  event unselect_chat&#10;  // US-10&#10;    any u1 u2&#10;&#9;where&#10;&#9;  @grd1 u1 ∈ user ∧ u2 ∈ user&#10;&#9;  @grd3 u1 ↦ u2 ∈ active&#10;&#9;then&#10;&#9;  @act1 active ≔ {u1} ⩤ active&#10;  end&#10;end&#10;&#10;&#10;&#10;" version="5">
+<org.eventb.core.seesContext name="_bHo9kKNuEeek3qZDwmMYTw" org.eventb.core.target="ctx0"/>
+<org.eventb.core.event name="'" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="INITIALISATION">
+<org.eventb.core.action name="_bHpkoKNuEeek3qZDwmMYTw" org.eventb.core.assignment="user ≔  ∅" org.eventb.core.label="init1"/>
+<org.eventb.core.action name="_bHpkoaNuEeek3qZDwmMYTw" org.eventb.core.assignment="content ≔ ∅" org.eventb.core.label="init2"/>
+<org.eventb.core.action name="_bHpkoqNuEeek3qZDwmMYTw" org.eventb.core.assignment="chat ≔ ∅" org.eventb.core.label="init3"/>
+<org.eventb.core.action name="_bHpko6NuEeek3qZDwmMYTw" org.eventb.core.assignment="active ≔ ∅" org.eventb.core.comment="init7 chatcontent ≔ ∅" org.eventb.core.label="init4"/>
+<org.eventb.core.action name="_bHpkpKNuEeek3qZDwmMYTw" org.eventb.core.assignment="muted ≔ ∅" org.eventb.core.label="init5"/>
+<org.eventb.core.action name="_bHpkpaNuEeek3qZDwmMYTw" org.eventb.core.assignment="chatcontent ≔ ∅" org.eventb.core.label="init6"/>
+<org.eventb.core.action name="_8B7p86k4EeeVioCwPvnN6Q" org.eventb.core.assignment="owner ≔ ∅" org.eventb.core.label="init7"/>
+</org.eventb.core.event>
+<org.eventb.core.variable name="_bHqLsqNuEeek3qZDwmMYTw" org.eventb.core.identifier="user"/>
+<org.eventb.core.variable name="_bHqLs6NuEeek3qZDwmMYTw" org.eventb.core.identifier="content"/>
+<org.eventb.core.variable name="_bHqLtKNuEeek3qZDwmMYTw" org.eventb.core.identifier="chat"/>
+<org.eventb.core.variable name="_bHqLtaNuEeek3qZDwmMYTw" org.eventb.core.identifier="active"/>
+<org.eventb.core.variable name="_bHqywKNuEeek3qZDwmMYTw" org.eventb.core.identifier="muted"/>
+<org.eventb.core.invariant name="_bHqyxKNuEeek3qZDwmMYTw" org.eventb.core.label="inv1" org.eventb.core.predicate="user ⊆ USER"/>
+<org.eventb.core.invariant name="_bHqyxaNuEeek3qZDwmMYTw" org.eventb.core.label="inv2" org.eventb.core.predicate="content ⊆ CONTENT"/>
+<org.eventb.core.invariant name="_bHqyxqNuEeek3qZDwmMYTw" org.eventb.core.comment="chat sessions" org.eventb.core.label="inv3" org.eventb.core.predicate="chat ∈ user ↔ user"/>
+<org.eventb.core.invariant name="_bHrZ0KNuEeek3qZDwmMYTw" org.eventb.core.comment="active chat session" org.eventb.core.label="inv4" org.eventb.core.predicate="active ∈ user ⇸ user"/>
+<org.eventb.core.invariant name="_bHrZ0aNuEeek3qZDwmMYTw" org.eventb.core.comment="muted sessions" org.eventb.core.label="inv5" org.eventb.core.predicate="muted ∈ user ↔ user"/>
+<org.eventb.core.invariant name="_bHrZ0qNuEeek3qZDwmMYTw" org.eventb.core.comment="active chat sessions" org.eventb.core.label="inv6" org.eventb.core.predicate="active ⊆ chat"/>
+<org.eventb.core.invariant name="_bHsA4KNuEeek3qZDwmMYTw" org.eventb.core.comment="muted chat sessions" org.eventb.core.label="inv7" org.eventb.core.predicate="muted ⊆ chat"/>
+<org.eventb.core.event name="_bHsA46NuEeek3qZDwmMYTw" org.eventb.core.comment="US-01" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="creat_chat_session">
+<org.eventb.core.parameter name="_8B7p8Kk4EeeVioCwPvnN6Q" org.eventb.core.identifier="u1"/>
+<org.eventb.core.parameter name="_8B7p8ak4EeeVioCwPvnN6Q" org.eventb.core.identifier="u2"/>
+<org.eventb.core.guard name="_8B7p8qk4EeeVioCwPvnN6Q" org.eventb.core.label="grd1" org.eventb.core.predicate="u1 ∈ user ∧ u2 ∈ user"/>
+<org.eventb.core.guard name="_JI0nsKk5EeeVioCwPvnN6Q" org.eventb.core.label="grd2" org.eventb.core.predicate="u1 ↦ u2 ∉ chat"/>
+<org.eventb.core.action name="_Be_aOanWEeeaxakKd9Dntw" org.eventb.core.assignment="chat ≔ chat ∪ {u1 ↦ u2}" org.eventb.core.label="act1"/>
+</org.eventb.core.event>
+<org.eventb.core.event name="_6tLzgahGEeepuZAizUZzqw" org.eventb.core.comment="US-02" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="select_chat">
+<org.eventb.core.parameter name="_hqZqoKk6EeeVioCwPvnN6Q" org.eventb.core.identifier="u1"/>
+<org.eventb.core.parameter name="_hqZqoak6EeeVioCwPvnN6Q" org.eventb.core.identifier="u2"/>
+<org.eventb.core.guard name="_hqZqoqk6EeeVioCwPvnN6Q" org.eventb.core.label="grd1" org.eventb.core.predicate="u1 ∈ user ∧ u2 ∈ user"/>
+<org.eventb.core.guard name="_KO_lkKk5EeeVioCwPvnN6Q" org.eventb.core.label="grd2" org.eventb.core.predicate="u1 ↦ u2 ∈ chat"/>
+<org.eventb.core.action name="_Be_aOqnWEeeaxakKd9Dntw" org.eventb.core.assignment="active ≔ active  {u1 ↦ u2}" org.eventb.core.label="act1"/>
+</org.eventb.core.event>
+<org.eventb.core.event name="_6tLzgqhGEeepuZAizUZzqw" org.eventb.core.comment="US-03" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="chatting">
+<org.eventb.core.parameter name="_Be_aMKnWEeeaxakKd9Dntw" org.eventb.core.identifier="u1"/>
+<org.eventb.core.parameter name="_Be_aManWEeeaxakKd9Dntw" org.eventb.core.identifier="u2"/>
+<org.eventb.core.parameter name="_Be_aMqnWEeeaxakKd9Dntw" org.eventb.core.identifier="c"/>
+<org.eventb.core.guard name="_Be_aM6nWEeeaxakKd9Dntw" org.eventb.core.label="grd1" org.eventb.core.predicate="u1 ∈ user ∧ u2 ∈ user"/>
+<org.eventb.core.guard name="_Be_aNKnWEeeaxakKd9Dntw" org.eventb.core.label="grd2" org.eventb.core.predicate="u1 ↦ u2 ∈ chat"/>
+<org.eventb.core.guard name="_Be_aNanWEeeaxakKd9Dntw" org.eventb.core.label="grd3" org.eventb.core.predicate="u1 ↦ u2 ∉ muted"/>
+<org.eventb.core.guard name="_Be_aNqnWEeeaxakKd9Dntw" org.eventb.core.label="grd4" org.eventb.core.predicate="u2 ↦ u1 ∉ muted"/>
+<org.eventb.core.guard name="_Be_aN6nWEeeaxakKd9Dntw" org.eventb.core.label="grd5" org.eventb.core.predicate="u1 ↦ u2 ∈ active"/>
+<org.eventb.core.guard name="_Be_aOKnWEeeaxakKd9Dntw" org.eventb.core.label="grd6" org.eventb.core.predicate="c ∈ CONTENT ∖ content"/>
+<org.eventb.core.action name="_rFZskKnWEeeaxakKd9Dntw" org.eventb.core.assignment="content ≔ content ∪ {c}" org.eventb.core.label="act1"/>
+<org.eventb.core.action name="_rFZskanWEeeaxakKd9Dntw" org.eventb.core.assignment="chat ≔ chat ∪ {u2 ↦ u1}" org.eventb.core.label="act2"/>
+<org.eventb.core.action name="_uK8ryKnXEeeaxakKd9Dntw" org.eventb.core.assignment="chatcontent ≔ chatcontent ∪ {c ↦ (u1 ↦ u2)} ∪ {c ↦ (u2 ↦ u1)}" org.eventb.core.label="act3"/>
+<org.eventb.core.action name="_EI7pMKncEeeaxakKd9Dntw" org.eventb.core.assignment="owner ≔ owner ∪ {c ↦ u1}" org.eventb.core.label="act4"/>
+</org.eventb.core.event>
+<org.eventb.core.event name="_6tLzg6hGEeepuZAizUZzqw" org.eventb.core.comment="US-04" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="delete_content">
+<org.eventb.core.parameter name="_uK8rwKnXEeeaxakKd9Dntw" org.eventb.core.identifier="u1"/>
+<org.eventb.core.parameter name="_uK8rwanXEeeaxakKd9Dntw" org.eventb.core.identifier="u2"/>
+<org.eventb.core.parameter name="_uK8rwqnXEeeaxakKd9Dntw" org.eventb.core.identifier="c"/>
+<org.eventb.core.guard name="_uK8rw6nXEeeaxakKd9Dntw" org.eventb.core.comment="@grd2 u1 ↦ u2 ∈ chat // useless due to the next guard" org.eventb.core.label="grd1" org.eventb.core.predicate="u1 ∈ user ∧ u2 ∈ user"/>
+<org.eventb.core.guard name="_uK8rxKnXEeeaxakKd9Dntw" org.eventb.core.label="grd3" org.eventb.core.predicate="u1 ↦ u2 ∈ active"/>
+<org.eventb.core.guard name="_uK8rxanXEeeaxakKd9Dntw" org.eventb.core.label="grd4" org.eventb.core.predicate="c ∈ content"/>
+<org.eventb.core.guard name="_uK8rxqnXEeeaxakKd9Dntw" org.eventb.core.label="grd5" org.eventb.core.predicate="(c ↦ (u1 ↦ u2)) ∈ chatcontent"/>
+<org.eventb.core.action name="_EI7pNqncEeeaxakKd9Dntw" org.eventb.core.assignment="chatcontent ≔ chatcontent ∖ {c ↦ (u1 ↦ u2)}" org.eventb.core.label="act1"/>
+</org.eventb.core.event>
+<org.eventb.core.event name="_6tMakKhGEeepuZAizUZzqw" org.eventb.core.comment="US-04" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="clear_content">
+<org.eventb.core.parameter name="_EI7pMancEeeaxakKd9Dntw" org.eventb.core.identifier="u"/>
+<org.eventb.core.parameter name="_EI7pMqncEeeaxakKd9Dntw" org.eventb.core.identifier="c"/>
+<org.eventb.core.guard name="_EI7pM6ncEeeaxakKd9Dntw" org.eventb.core.label="grd1" org.eventb.core.predicate="u ∈ user"/>
+<org.eventb.core.guard name="_EI7pNKncEeeaxakKd9Dntw" org.eventb.core.label="grd2" org.eventb.core.predicate="c ∈ content"/>
+<org.eventb.core.guard name="_EI7pNancEeeaxakKd9Dntw" org.eventb.core.label="grd3" org.eventb.core.predicate="c ↦ u ∈ owner"/>
+<org.eventb.core.action name="_EI7pN6ncEeeaxakKd9Dntw" org.eventb.core.assignment="chatcontent ≔ {c} ⩤ chatcontent" org.eventb.core.label="act1"/>
+<org.eventb.core.action name="_RTWmoKndEeeaxakKd9Dntw" org.eventb.core.assignment="owner ≔ owner ∖ {c ↦ u}" org.eventb.core.label="act2"/>
+<org.eventb.core.action name="_kTIDUKndEeeaxakKd9Dntw" org.eventb.core.assignment="content ≔ content ∖ {c}" org.eventb.core.label="act3"/>
+</org.eventb.core.event>
+<org.eventb.core.event name="_6tMakahGEeepuZAizUZzqw" org.eventb.core.comment="US-05" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="delete_chat_session">
+<org.eventb.core.parameter name="_mXzTAKnsEeeHFdEvtaui5A" org.eventb.core.identifier="u1"/>
+<org.eventb.core.parameter name="_mXzTAansEeeHFdEvtaui5A" org.eventb.core.identifier="u2"/>
+<org.eventb.core.guard name="_mXzTAqnsEeeHFdEvtaui5A" org.eventb.core.label="grd1" org.eventb.core.predicate="u1 ∈ user ∧ u2 ∈ user"/>
+<org.eventb.core.guard name="_mXzTA6nsEeeHFdEvtaui5A" org.eventb.core.label="grd2" org.eventb.core.predicate="u1 ↦ u2 ∈ chat"/>
+<org.eventb.core.guard name="_mXz6EKnsEeeHFdEvtaui5A" org.eventb.core.label="grd3" org.eventb.core.predicate="u1 ↦ u2 ∈ active"/>
+<org.eventb.core.action name="_mXz6EansEeeHFdEvtaui5A" org.eventb.core.assignment="chatcontent ≔ chatcontent ⩥ {u1 ↦ u2}" org.eventb.core.label="act1"/>
+<org.eventb.core.action name="_Il8P8anwEeeHFdEvtaui5A" org.eventb.core.assignment="active ≔ active ∖ {u1 ↦ u2}" org.eventb.core.label="act2"/>
+<org.eventb.core.action name="_jydroanwEeeHFdEvtaui5A" org.eventb.core.assignment="muted ≔ muted ∖ {u1 ↦ u2}" org.eventb.core.label="act3"/>
+<org.eventb.core.action name="_jyeSsqnwEeeHFdEvtaui5A" org.eventb.core.assignment="chat ≔ chat ∖ {u1 ↦ u2}" org.eventb.core.label="act4"/>
+</org.eventb.core.event>
+<org.eventb.core.event name="_6tMakqhGEeepuZAizUZzqw" org.eventb.core.comment="US-06" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="mute_chat">
+<org.eventb.core.parameter name="_Il8P8KnwEeeHFdEvtaui5A" org.eventb.core.identifier="u1"/>
+<org.eventb.core.parameter name="_Il83AKnwEeeHFdEvtaui5A" org.eventb.core.identifier="u2"/>
+<org.eventb.core.guard name="_Il83A6nwEeeHFdEvtaui5A" org.eventb.core.label="grd1" org.eventb.core.predicate="u1 ∈ user ∧ u2 ∈ user"/>
+<org.eventb.core.guard name="_Il9eEqnwEeeHFdEvtaui5A" org.eventb.core.label="grd2" org.eventb.core.predicate="u1 ↦ u2 ∈ chat"/>
+<org.eventb.core.guard name="_jyeSsKnwEeeHFdEvtaui5A" org.eventb.core.label="grd3" org.eventb.core.predicate="u1 ↦ u2 ∉ muted"/>
+<org.eventb.core.action name="_6YVsUKnwEeeHFdEvtaui5A" org.eventb.core.assignment="muted ≔ muted ∪ {u1 ↦ u2}" org.eventb.core.label="act1"/>
+</org.eventb.core.event>
+<org.eventb.core.event name="_6tMak6hGEeepuZAizUZzqw" org.eventb.core.comment="US-07" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="unmute_chat">
+<org.eventb.core.parameter name="_Il83AanwEeeHFdEvtaui5A" org.eventb.core.identifier="u1"/>
+<org.eventb.core.parameter name="_jydroKnwEeeHFdEvtaui5A" org.eventb.core.identifier="u2"/>
+<org.eventb.core.guard name="_jyeSsanwEeeHFdEvtaui5A" org.eventb.core.label="grd1" org.eventb.core.predicate="u1 ∈ user ∧ u2 ∈ user"/>
+<org.eventb.core.guard name="_W6uHsqnxEeeHFdEvtaui5A" org.eventb.core.label="grd2" org.eventb.core.predicate="u1 ↦ u2 ∈ chat"/>
+<org.eventb.core.guard name="_W6uHs6nxEeeHFdEvtaui5A" org.eventb.core.label="grd3" org.eventb.core.predicate="u1 ↦ u2 ∈ muted"/>
+<org.eventb.core.action name="_W6uHtKnxEeeHFdEvtaui5A" org.eventb.core.assignment="muted ≔ muted ∖ {u1 ↦ u2}" org.eventb.core.label="act1"/>
+</org.eventb.core.event>
+<org.eventb.core.event name="_6tMalKhGEeepuZAizUZzqw" org.eventb.core.comment="US-08" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="broadcast">
+<org.eventb.core.parameter name="_jydroqnwEeeHFdEvtaui5A" org.eventb.core.identifier="u"/>
+<org.eventb.core.parameter name="_jydro6nwEeeHFdEvtaui5A" org.eventb.core.identifier="ul"/>
+<org.eventb.core.parameter name="_W6uHsKnxEeeHFdEvtaui5A" org.eventb.core.identifier="c"/>
+<org.eventb.core.action name="_kTTSY6nxEeeHFdEvtaui5A" org.eventb.core.assignment="content ≔  content ∪ {c}" org.eventb.core.label="act1"/>
+<org.eventb.core.guard name="_kTTSYanxEeeHFdEvtaui5A" org.eventb.core.label="grd1" org.eventb.core.predicate="u ∈ user ∧ ul ∈ user ∧ c ∈ CONTENT ∖ content"/>
+<org.eventb.core.guard name="_kTTSYqnxEeeHFdEvtaui5A" org.eventb.core.label="grd2" org.eventb.core.predicate="u ↦ ul ∈ chat"/>
+<org.eventb.core.action name="_zGLJcKn0EeeHFdEvtaui5A" org.eventb.core.assignment="owner ≔ owner  ∪ {c ↦ u}" org.eventb.core.label="act3"/>
+<org.eventb.core.action name="_zGLwgKn0EeeHFdEvtaui5A" org.eventb.core.assignment="chatcontent ≔ chatcontent ∪ {c ↦ (u ↦ ul)}" org.eventb.core.label="act2"/>
+</org.eventb.core.event>
+<org.eventb.core.event name="_6tMalahGEeepuZAizUZzqw" org.eventb.core.comment="US-09" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="forward">
+<org.eventb.core.parameter name="_W6uHsanxEeeHFdEvtaui5A" org.eventb.core.identifier="u"/>
+<org.eventb.core.parameter name="_kTSrUKnxEeeHFdEvtaui5A" org.eventb.core.identifier="ul"/>
+<org.eventb.core.parameter name="_kTTSYKnxEeeHFdEvtaui5A" org.eventb.core.identifier="c"/>
+<org.eventb.core.guard name="_OkZgg6nyEeeHFdEvtaui5A" org.eventb.core.label="grd1" org.eventb.core.predicate="u ∈ user ∧ ul ∈ user ∧ c ∈ content"/>
+<org.eventb.core.guard name="_OkZghKnyEeeHFdEvtaui5A" org.eventb.core.label="grd2" org.eventb.core.predicate="u ↦ ul ∈ chat"/>
+<org.eventb.core.action name="_zGLwgan0EeeHFdEvtaui5A" org.eventb.core.assignment="chatcontent ≔ chatcontent ∪ {c ↦ (u ↦ ul)}" org.eventb.core.label="act1"/>
+</org.eventb.core.event>
+<org.eventb.core.event name="_6tMalqhGEeepuZAizUZzqw" org.eventb.core.comment="US-10" org.eventb.core.convergence="0" org.eventb.core.extended="false" org.eventb.core.label="unselect_chat">
+<org.eventb.core.parameter name="_zGMXkKn0EeeHFdEvtaui5A" org.eventb.core.identifier="u1"/>
+<org.eventb.core.parameter name="_zGMXkan0EeeHFdEvtaui5A" org.eventb.core.identifier="u2"/>
+<org.eventb.core.guard name="_zGMXkqn0EeeHFdEvtaui5A" org.eventb.core.label="grd1" org.eventb.core.predicate="u1 ∈ user ∧ u2 ∈ user"/>
+<org.eventb.core.guard name="_zGMXk6n0EeeHFdEvtaui5A" org.eventb.core.label="grd3" org.eventb.core.predicate="u1 ↦ u2 ∈ active"/>
+<org.eventb.core.action name="_zGMXlan0EeeHFdEvtaui5A" org.eventb.core.assignment="active ≔ {u1} ⩤ active" org.eventb.core.label="act1"/>
+</org.eventb.core.event>
+<org.eventb.core.variable name="_rFZskqnWEeeaxakKd9Dntw" org.eventb.core.identifier="chatcontent"/>
+<org.eventb.core.invariant name="_rFZsk6nWEeeaxakKd9Dntw" org.eventb.core.comment="chat contents" org.eventb.core.label="inv8" org.eventb.core.predicate="chatcontent ∈ content ↔ chat"/>
+<org.eventb.core.variable name="_EI7pOKncEeeaxakKd9Dntw" org.eventb.core.identifier="owner"/>
+<org.eventb.core.invariant name="_EI7pOancEeeaxakKd9Dntw" org.eventb.core.comment="chat sessions&#10;     inv10 chatcontent ∈ // users' chat content " org.eventb.core.label="inv9" org.eventb.core.predicate="owner ∈ content → user"/>
+</org.eventb.core.machineFile>

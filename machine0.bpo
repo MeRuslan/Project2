@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<org.eventb.core.poFile org.eventb.core.poStamp="68">
+<org.eventb.core.poFile org.eventb.core.poStamp="70">
 <org.eventb.core.poPredicateSet name="CTXHYP" org.eventb.core.poStamp="0">
 <org.eventb.core.poIdentifier name="CONTENT" org.eventb.core.type="ℙ(CONTENT)"/>
 <org.eventb.core.poIdentifier name="USER" org.eventb.core.type="ℙ(USER)"/>
@@ -391,7 +391,7 @@
 <org.eventb.core.poPredicate name="PRD0" org.eventb.core.predicate="u∈user∧ul⊆user∧c∈CONTENT ∖ content" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalKhGEeepuZAizUZzqw|org.eventb.core.guard#_kTTSYanxEeeHFdEvtaui5A"/>
 <org.eventb.core.poPredicate name="PRD1" org.eventb.core.predicate="{u} × ul⊆chat" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalKhGEeepuZAizUZzqw|org.eventb.core.guard#_kTTSYqnxEeeHFdEvtaui5A"/>
 </org.eventb.core.poPredicateSet>
-<org.eventb.core.poSequent name="forward/inv8/INV" org.eventb.core.accurate="true" org.eventb.core.poDesc="Invariant  preservation" org.eventb.core.poStamp="66">
+<org.eventb.core.poSequent name="forward/inv8/INV" org.eventb.core.accurate="true" org.eventb.core.poDesc="Invariant  preservation" org.eventb.core.poStamp="70">
 <org.eventb.core.poPredicateSet name="SEQHYP" org.eventb.core.parentSet="/whatsapp-lab1_test/machine0.bpo|org.eventb.core.poFile#machine0|org.eventb.core.poPredicateSet#EVTALLHYPchatconteo'"/>
 <org.eventb.core.poPredicate name="SEQHYQ" org.eventb.core.predicate="chatcontent∪({c} × ({u} × ul))∈content ↔ chat" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.invariant#_rFZsk6nWEeeaxakKd9Dntw"/>
 <org.eventb.core.poSource name="SEQHYR" org.eventb.core.poRole="DEFAULT" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalahGEeepuZAizUZzqw"/>
@@ -405,11 +405,12 @@
 <org.eventb.core.poIdentifier name="c" org.eventb.core.type="CONTENT"/>
 <org.eventb.core.poIdentifier name="chatcontent'" org.eventb.core.type="ℙ(CONTENT×(USER×USER))"/>
 </org.eventb.core.poPredicateSet>
-<org.eventb.core.poPredicateSet name="EVTALLHYPchatconteo'" org.eventb.core.parentSet="/whatsapp-lab1_test/machine0.bpo|org.eventb.core.poFile#machine0|org.eventb.core.poPredicateSet#EVTIDENTchatconteo'" org.eventb.core.poStamp="66">
+<org.eventb.core.poPredicateSet name="EVTALLHYPchatconteo'" org.eventb.core.parentSet="/whatsapp-lab1_test/machine0.bpo|org.eventb.core.poFile#machine0|org.eventb.core.poPredicateSet#EVTIDENTchatconteo'" org.eventb.core.poStamp="70">
 <org.eventb.core.poPredicate name="PRD0" org.eventb.core.predicate="u∈user∧ul⊆user∧c∈content" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalahGEeepuZAizUZzqw|org.eventb.core.guard#_OkZgg6nyEeeHFdEvtaui5A"/>
 <org.eventb.core.poPredicate name="PRD1" org.eventb.core.predicate="{u} × ul⊆chat" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalahGEeepuZAizUZzqw|org.eventb.core.guard#_OkZghKnyEeeHFdEvtaui5A"/>
+<org.eventb.core.poPredicate name="PRD2" org.eventb.core.predicate="chatcontent∩({c} × ({u} × user))≠(∅ ⦂ ℙ(CONTENT×(USER×USER)))" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalahGEeepuZAizUZzqw|org.eventb.core.guard#_2wA78qoKEeeZ7YPeurqf6Q"/>
 </org.eventb.core.poPredicateSet>
-<org.eventb.core.poSequent name="unselect_chat/inv4/INV" org.eventb.core.accurate="true" org.eventb.core.poDesc="Invariant  preservation" org.eventb.core.poStamp="67">
+<org.eventb.core.poSequent name="unselect_chat/inv4/INV" org.eventb.core.accurate="true" org.eventb.core.poDesc="Invariant  preservation" org.eventb.core.poStamp="69">
 <org.eventb.core.poPredicateSet name="SEQHYP" org.eventb.core.parentSet="/whatsapp-lab1_test/machine0.bpo|org.eventb.core.poFile#machine0|org.eventb.core.poPredicateSet#EVTALLHYPchatconteo("/>
 <org.eventb.core.poPredicate name="SEQHYQ" org.eventb.core.predicate="{u1} ⩤ active∈user ⇸ user" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.invariant#_bHrZ0KNuEeek3qZDwmMYTw"/>
 <org.eventb.core.poSource name="SEQHYR" org.eventb.core.poRole="DEFAULT" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalqhGEeepuZAizUZzqw"/>
@@ -417,7 +418,7 @@
 <org.eventb.core.poSelHint name="SEQHYT" org.eventb.core.poSelHintFst="/whatsapp-lab1_test/machine0.bpo|org.eventb.core.poFile#machine0|org.eventb.core.poPredicateSet#ALLHYP" org.eventb.core.poSelHintSnd="/whatsapp-lab1_test/machine0.bpo|org.eventb.core.poFile#machine0|org.eventb.core.poSequent#unselect_chat\/inv4\/INV|org.eventb.core.poPredicateSet#SEQHYP"/>
 <org.eventb.core.poSelHint name="SEQHYU" org.eventb.core.poSelHintFst="/whatsapp-lab1_test/machine0.bpo|org.eventb.core.poFile#machine0|org.eventb.core.poPredicateSet#ALLHYP|org.eventb.core.poPredicate#PRD3"/>
 </org.eventb.core.poSequent>
-<org.eventb.core.poSequent name="unselect_chat/inv6/INV" org.eventb.core.accurate="true" org.eventb.core.poDesc="Invariant  preservation" org.eventb.core.poStamp="67">
+<org.eventb.core.poSequent name="unselect_chat/inv6/INV" org.eventb.core.accurate="true" org.eventb.core.poDesc="Invariant  preservation" org.eventb.core.poStamp="69">
 <org.eventb.core.poPredicateSet name="SEQHYP" org.eventb.core.parentSet="/whatsapp-lab1_test/machine0.bpo|org.eventb.core.poFile#machine0|org.eventb.core.poPredicateSet#EVTALLHYPchatconteo("/>
 <org.eventb.core.poPredicate name="SEQHYQ" org.eventb.core.predicate="{u1} ⩤ active⊆chat" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.invariant#_bHrZ0qNuEeek3qZDwmMYTw"/>
 <org.eventb.core.poSource name="SEQHYR" org.eventb.core.poRole="DEFAULT" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalqhGEeepuZAizUZzqw"/>
@@ -430,9 +431,9 @@
 <org.eventb.core.poIdentifier name="u2" org.eventb.core.type="USER"/>
 <org.eventb.core.poIdentifier name="active'" org.eventb.core.type="ℙ(USER×USER)"/>
 </org.eventb.core.poPredicateSet>
-<org.eventb.core.poPredicateSet name="EVTALLHYPchatconteo(" org.eventb.core.parentSet="/whatsapp-lab1_test/machine0.bpo|org.eventb.core.poFile#machine0|org.eventb.core.poPredicateSet#EVTIDENTchatconteo(" org.eventb.core.poStamp="67">
-<org.eventb.core.poPredicate name="PRD0" org.eventb.core.predicate="u1∈user∧u2∈user" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalqhGEeepuZAizUZzqw|org.eventb.core.guard#_2wA78qoKEeeZ7YPeurqf6Q"/>
-<org.eventb.core.poPredicate name="PRD1" org.eventb.core.predicate="u1 ↦ u2∈active" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalqhGEeepuZAizUZzqw|org.eventb.core.guard#_BS-u8KoMEeeZ7YPeurqf6Q"/>
+<org.eventb.core.poPredicateSet name="EVTALLHYPchatconteo(" org.eventb.core.parentSet="/whatsapp-lab1_test/machine0.bpo|org.eventb.core.poFile#machine0|org.eventb.core.poPredicateSet#EVTIDENTchatconteo(" org.eventb.core.poStamp="69">
+<org.eventb.core.poPredicate name="PRD0" org.eventb.core.predicate="u1∈user∧u2∈user" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalqhGEeepuZAizUZzqw|org.eventb.core.guard#_BS-u8KoMEeeZ7YPeurqf6Q"/>
+<org.eventb.core.poPredicate name="PRD1" org.eventb.core.predicate="u1 ↦ u2∈active" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.event#_6tMalqhGEeepuZAizUZzqw|org.eventb.core.guard#_wXZDAKp4EeeZ7YPeurqf6Q"/>
 </org.eventb.core.poPredicateSet>
 <org.eventb.core.poPredicateSet name="ALLHYP" org.eventb.core.parentSet="/whatsapp-lab1_test/machine0.bpo|org.eventb.core.poFile#machine0|org.eventb.core.poPredicateSet#ABSHYP" org.eventb.core.poStamp="55">
 <org.eventb.core.poPredicate name="PRD0" org.eventb.core.predicate="user⊆USER" org.eventb.core.source="/whatsapp-lab1_test/machine0.bum|org.eventb.core.machineFile#machine0|org.eventb.core.invariant#_bHqyxKNuEeek3qZDwmMYTw"/>
